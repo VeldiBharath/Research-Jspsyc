@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title> Experiment 1 </title>
+  <script src="js/jspsych.js"></script>
+  <script src="js/jspsych-fullscreen.js"></script>
+  <script src="js/jspsych-image-button-response.js"></script>
+  <script src="js/jspsych-video-keyboard-response.js"></script>
+  <script src="js/jspsych-video-button-response.js"></script>
+  <script src="js/jspsych-video-slider-response.js"></script>
+  <script src="js/jspsych-html-button-response.js"></script>
+  <script src="js/jspsych-survey-multi-choice-custom.js"></script>
+  <script src="js/jspsych-html-slider-response-custom.js"></script>
+  <script src='https://proliferate.alps.science/static/js/proliferate.js'></script>
+  <script src="js/jspsych-survey-html-form.js"></script>
+  <script src='js/jquery.min.js'></script>
+  <script src='js/jquery-ui.min.js'></script>
+  <script src="js/jspsych-preload.js"></script>
+  <script src="js/utils.js"></script>
+  <link rel="stylesheet" href="css/jspsych.css">
+  <link rel="stylesheet" href='css/jquery-ui.min.css' />
+</head>
+<body></body>
+<script>
+
+    var timeline = [];
+
+    var loop_timeline = [];
+
+
+    var welcome = {
+        type: 'html-button-response',
+        stimulus: '<p><b>Consent Form</b></p> <div style="text-align:left;' +
+            'background-color:lightblue; padding:20px; max-width:900px;">' +
+            '<p><b>Description:</b> Welcome! You are invited to participate ' +
+            'in a research study in cognitive psychology. You will be asked ' +
+            'to perform various tasks on a computer which may include: looking ' +
+            'at images or videos, listening to sounds, reading scenarios, or ' +
+            'playing games. You may be asked a number of different questions ' +
+            'about making judgments and intepreting people’s actions. All ' +
+            'information collected will remain confidential. <p>' +
+            '<p><b>Risks and benefits:</b> Risks involved in this study are ' +
+            'the same as those normally associated with using a computer ' +
+            '(e.g., mild eye/arm strain). If you have any pre-existing ' +
+            'conditions that might make reading and completing a computer-' +
+            'based survey strenuous for you, you should probably elect to ' +
+            'not participate in this study. If at any time during the study ' +
+            'you feel unable to participate because you are experiencing strain, ' +
+            'you may end your participation without penalty. We cannot and do ' +
+            'not guarantee or promise that you will receive any benefits from ' +
+            'this study. Your decision whether or not to participate in this ' +
+            'study will not affect your employment, medical care, and/or grades ' +
+            'in school. </p>' +
+            '<p><b>Time involvement:</b> Your participation in this experiment ' +
+            'will take 20-30 minutes. </p>' +
+            '<p><b> Payment: </b> If recruitment materials indicate payment ' +
+            '(e.g., Amazon or other recruitment), you will receive compensation ' +
+            'as indicated. </p>' +
+            "<p><b>Subject's rights: </b> If you have read this notice and have " +
+            'decided to participate in this project, please understand your ' +
+            'participation is voluntary and you have the right to withdraw ' +
+            'your consent or discontinue participation at any time without ' + 
+            'penalty or loss of benefits to which you are otherwise entitled. ' +
+            'You have the right to refuse to answer particular questions. Your ' +
+            'individual privacy will be maintained in all published and written ' +
+            'data resulting from the study. </p>' +
+            '<p><b>Contact information: </b> If you have any questions, concerns ' +
+            'or complaints about this research study, its procedures, or risks ' +
+            'and benefits, you should ask the Protocol Director, (Professor ' +
+            'Tobias Gerstenberg, Phone: (650) 725-2431; Email: ' +
+            'gerstenberg@stanford.edu). </p>' +
+            '<p><b>Independent contact: </b>I f you are not satisfied with how ' +
+            'this study is being conducted, or if you have any concerns, ' +
+            'complaints, or general questions about the research or your ' +
+            'rights as a participant, please contact the Stanford Institutional ' +
+            'Review Board (IRB) to speak to someone independent of the research ' +
+            'team via email at irb2-manager@lists.stanford.edu, or via phone ' +
+            'at (650) 723-2480 or toll free at 1-866-680-2906. You can also ' +
+            'write to the Stanford IRB, Stanford University, 3000 El Camino ' +
+            'Real, Five Palo Alto Square, 4th Floor, Palo Alto, CA 94306. </p>' +
+            '<p>You may want to print a copy of this consent form to keep. By ' +
+            'clicking the button below, you acknowledge that you have read ' +
+            'the above information, that you are 18 years of age, or older ' +
+            'and give your consent to participate in our internet-based study ' +
+            'and consent for us to analyze the resulting data. </p> </div>' +
+            '<p> Do you agree with the terms of the experiment as explained ' +
+            'above? </p>',
+        choices: ['I agree']
+    }
+    timeline.push(welcome);
+
+    // var fullscreen_trial = {
+    // type: 'fullscreen',
+    // fullscreen_mode: true
+    // }
+    // timeline.push(fullscreen_trial)
+
+    // var welcome_page = {
+    // type: 'html-button-response',
+    // stimulus: '<div style="max-width:600px;"><p> In this experiment, you will be asked answer questions by watching a video. You must watch the video twice before you can answer the questions.</p></div>',
+    // choices: ['Continue']
+    // }
+
+    var instruction = {
+        timeline: [{
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>In this experiment, you will predict outcomes of English football matches. '
+            + 'The setting involves two teams playing in a FA cup match in 2024/2025 season under the new rule with <b>no draw and no rematch</b>.'
+            + "If the two teams draw in 90 minutes (plus stoppage time), they will play 30 minutes of extra time. And if they still draw in 120 minutes (plus stoppage time), the result will be decided by penalty shootouts.</p>"
+            + '<p> You will answer a few conceptual questions about the setting prior to entering the main experiment, so please review these information carefully. ' 
+            + "When you are done, click on the continue button.</p>"
+            + '<img><img src="' + 'demo_pics/inst_rule.png' + '" width="650" height="200"></img><p></p></div>'       
+            ,
+        choices: ['Continue']
+        },
+        {
+            type: 'html-slider-response',
+            stimulus: '<p>For each pair of teams, you will be asked the following question:</p>' + 
+            '<p></p>' + '<p>How likely do you think that '+ 'Burton Albion ' +  
+                '<img><img src="' + 'teams/burton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' + ' will <b>eliminate</b> ' 
+                + 'Blackburn ' +  '<img><img src="' + 'teams/blackburn.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. To pass the instruction, move the slider to around 40.</p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "instruction",
+            case: "instruction",
+            slider_width:650
+        },
+        {
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>There will be a total number of 4 blocks and 30 such questions in this experiment.</p>'
+            + '<p>After completing this experiment, you will be asked to complete a quick knowledge test about the teams involve in the experiment,'
+                + ' as well as your preferences for the teams. There will be more instructions about them towards the end of the experiment.</p>'
+                + '<p>The full experiment should take about 25 minutes to complete.</p>',
+        choices: ['Continue']
+        },
+        {
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>In the following, you will answer a few conceptual questions about the setting.</p>',
+        choices: ['Continue']
+        }
+        ]
+    }
+
+    loop_timeline.push(instruction);
+    // timeline.push(instruction);
+
+    var comprehension_qs = {
+        type: 'survey-multi-choice',
+        questions: [
+            {
+            prompt: "If the two teams draw in 90 minutes plus stoppage time under the setting of this experiment, they will play a rematch.", name: "rematch", 
+            options: ["Yes", "No"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "If the two teams draw in 120 minutes plus stoppage time under the setting of this experiment, the game winner will be decided by penalty shootouts.", name: "penalty", 
+            options: ["Yes", "No"], 
+            required:true,
+            horizontal: true},
+            {
+            prompt: "The predictions will be about the upcoming 2024/2025 season.", name: "season", 
+            options: ["Yes", "No"], 
+            required:true,
+            horizontal: true}
+        ],
+        preamble: '<b>Comprehension check</b>',
+        on_finish: function(data){
+            // jspsych records responses as json strings
+            data.correct = (data.responses == "{\"rematch\":\"No\",\"penalty\":\"Yes\",\"season\":\"Yes\"}");
+        }
+    }
+
+    loop_timeline.push(comprehension_qs);
+
+    // timeline.push(comprehension_qs);
+
+    var fail_comprehension = {
+        timeline: [{
+            type: 'html-button-response',
+            stimulus: 'Unfortunately, you missed some of the comprehension ' +
+                'questions.</p> <p>Please review the instructions again.',
+            choices: ['Review'],
+        }],
+        conditional_function: function(){
+            var data = jsPsych.data.get().last(1).values()[0];
+            return !(data.correct);
+        }
+    }
+    loop_timeline.push(fail_comprehension);
+    
+    var loop_node = {
+        timeline: loop_timeline,
+        loop_function: function(data){
+            var data = jsPsych.data.get().last(1).values()[0];
+            return !(data.correct);
+        }
+    }
+    
+    timeline.push(loop_node);
+
+    timeline.push({
+            type: 'html-button-response',
+            stimulus: '<div style=max-width:800px;' +
+                '>' +
+                '<p> Correct! You will now begin the actual experiment.</p>' +
+                '<p>Click the start button whenever you are ready.</p> </div>',
+            choices: ['Start'],
+        });
+
+    var g1_g2_order1 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '+ 
+                'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Chelsea ' +  '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g1g2o1",
+            case: "g1g2o1",
+            slider_width:650
+    }
+
+    var g1_g3_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '+ 
+            'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Newcastle ' +  '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g1g3o1",
+        case: "g1g3o1",
+        slider_width:650
+    }
+
+    var g1_g4_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Brentford ' +  '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g1g4o1",
+        case: "g1g4o1",
+        slider_width:650
+    }
+
+    var g1_g5_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Wolverhampton ' +  '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g1g5o1",
+        case: "g1g5o1",
+        slider_width:650
+    }
+
+    var g2_g3_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Chelsea ' +  '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Newcastle ' +  '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g2g3o1",
+        case: "g2g3o1",
+        slider_width:650
+    }
+
+    var g2_g4_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Chelsea ' +  '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Brentford ' +  '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g2g4o1",
+        case: "g2g4o1",
+        slider_width:650
+    }
+
+    var g2_g5_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Chelsea ' + '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Wolverhampton ' +  '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g2g5o1",
+        case: "g2g5o1",
+        slider_width:650
+    }
+
+    var g3_g4_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Newcastle ' + '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Brentford ' +  '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g3g4o1",
+        case: "g3g4o1",
+        slider_width:650
+    }
+
+    var g3_g5_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Newcastle ' + '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Wolverhampton ' +  '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g3g5o1",
+        case: "g3g5o1",
+        slider_width:650
+    }
+
+    var g4_g5_order1 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Brentford ' + '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Wolverhampton ' +  '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g4g5o1",
+        case: "g4g5o1",
+        slider_width:650
+    }
+    
+
+    var block1 =  {
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>This is the end of block 1.</p>',
+        choices: ['Continue']
+    }
+
+    var block1_question_list = [g1_g2_order1,g1_g3_order1,g1_g4_order1,g1_g5_order1,g2_g3_order1,g2_g4_order1,g2_g5_order1,g3_g4_order1,g3_g5_order1,g4_g5_order1]
+    block1_question_list = jsPsych.randomization.shuffle(block1_question_list)
+    var timeline = timeline.concat(block1_question_list)
+    timeline.push(block1)
+
+
+    var g1_g1_order1 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Arsenal ' + '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Manchester City ' +  '<img><img src="' + 'teams/manchester_city.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g1g1o1",
+            case: "g1g1o1",
+            slider_width:650
+    }
+
+    var g2_g2_order1 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Chelsea ' +  '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Manchester United ' +  '<img><img src="' + 'teams/manchester_united.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g2g2o1",
+            case: "g2g2o1",
+            slider_width:650
+    }
+
+    var g3_g3_order1 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Newcastle ' +  '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Tottenham ' +  '<img><img src="' + 'teams/tottenham.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g3g3o1",
+            case: "g3g3o1",
+            slider_width:650
+    }
+
+    var g4_g4_order1 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Brentford ' + '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Westham ' +  '<img><img src="' + 'teams/westham.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g4g4o1",
+            case: "g4g4o1",
+            slider_width:650
+    }
+
+    var g5_g5_order1 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Wolverhampton ' + '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Everton ' +  '<img><img src="' + 'teams/everton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g5g5o1",
+            case: "g5g5o1",
+            slider_width:650
+    }
+
+    var block2 =  {
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>This is the end of block 2.</p>',
+        choices: ['Continue']
+    }
+
+    var block2_question_list = [g1_g1_order1,g2_g2_order1,g3_g3_order1,g4_g4_order1,g5_g5_order1]
+    block2_question_list = jsPsych.randomization.shuffle(block2_question_list)
+    var timeline = timeline.concat(block2_question_list)
+    timeline.push(block2)
+
+
+    var g1_g2_order2 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Chelsea ' + '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g1g2o2",
+            case: "g1g2o2",
+            slider_width:650
+    }
+
+    var g1_g3_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Newcastle ' + '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g1g3o2",
+        case: "g1g3o2",
+        slider_width:650
+    }
+
+    var g1_g4_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Brentford ' + '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g1g4o2",
+        case: "g1g4o2",
+        slider_width:650
+    }
+
+    var g1_g5_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Wolverhampton ' + '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g1g5o2",
+        case: "g1g5o2",
+        slider_width:650
+    }
+
+    var g2_g3_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Newcastle ' + '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Chelsea ' +  '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g2g3o2",
+        case: "g2g3o2",
+        slider_width:650
+    }
+
+    var g2_g4_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Brentford ' + '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Chelsea ' +  '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g2g4o2",
+        case: "g2g4o2",
+        slider_width:650
+    }
+
+    var g2_g5_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Wolverhampton ' + '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Chelsea ' +  '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g2g5o2",
+        case: "g2g5o2",
+        slider_width:650
+    }
+
+    var g3_g4_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Brentford ' + '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Newcastle ' +  '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g3g4o2",
+        case: "g3g4o2",
+        slider_width:650
+    }
+
+    var g3_g5_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Wolverhampton ' + '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Newcastle ' +  '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g3g5o2",
+        case: "g3g5o2",
+        slider_width:650
+    }
+
+    var g4_g5_order2 = {
+        type: 'html-slider-response',
+        stimulus: '<p>How likely do you think that '
+            + 'Wolverhampton ' + '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+            + ' will <b>eliminate</b> ' 
+            + 'Brighton ' +  '<img><img src="' + 'teams/brighton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+            + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+            + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+        labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+        min: 0,
+        max: 100,
+        step: 1,
+        choices:['Continue'],
+        statement: "g4g5o2",
+        case: "g4g5o2",
+        slider_width:650
+    }
+
+    var block3 =  {
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>This is the end of block 3.</p>',
+        choices: ['Continue']
+    }
+
+    var block3_question_list = [g1_g2_order2,g1_g3_order2,g1_g4_order2,g1_g5_order2,g2_g3_order2,g2_g4_order2,g2_g5_order2,g3_g4_order2,g3_g5_order2,g4_g5_order2]
+    block3_question_list = jsPsych.randomization.shuffle(block3_question_list)
+    var timeline = timeline.concat(block3_question_list)
+    timeline.push(block3)
+
+
+    var g1_g1_order2 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Manchester City ' + '<img><img src="' + 'teams/manchester_city.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Arsenal ' +  '<img><img src="' + 'teams/arsenal.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g1g1o2",
+            case: "g1g1o2",
+            slider_width:650
+    }
+
+    var g2_g2_order2 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Manchester United ' + '<img><img src="' + 'teams/manchester_united.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Chelsea ' +  '<img><img src="' + 'teams/chelsea.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g2g2o2",
+            case: "g2g2o2",
+            slider_width:650
+    }
+
+    var g3_g3_order2 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Tottenham ' + '<img><img src="' + 'teams/tottenham.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Newcastle ' +  '<img><img src="' + 'teams/newcastle.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g3g3o2",
+            case: "g3g3o2",
+            slider_width:650
+    }
+
+    var g4_g4_order2 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Westham ' + '<img><img src="' + 'teams/westham.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Brentford ' +  '<img><img src="' + 'teams/brentford.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g4g4o2",
+            case: "g4g4o2",
+            slider_width:650
+    }
+
+    var g5_g5_order2 = {
+            type: 'html-slider-response',
+            stimulus: '<p>How likely do you think that '
+                + 'Everton ' + '<img><img src="' + 'teams/everton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>' 
+                + ' will <b>eliminate</b> ' 
+                + 'Wolverhampton ' +  '<img><img src="' + 'teams/wolverhampton.png' + '" width="50" height="50" style="vertical-align: middle;"></img>'
+                + ' in a FA cup game under the new rule in 2024/2025 season?</p>'
+                + '<p>Please click on the slider below to indicate your response. </p>' + '<br />',
+            labels: ["0%<br />(definitely no)", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100%<br />(definitely yes)"],
+            min: 0,
+            max: 100,
+            step: 1,
+            choices:['Continue'],
+            statement: "g5g5o2",
+            case: "g5g5o2",
+            slider_width:650
+    }
+
+    var block4 =  {
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>This is the end of block 4.</p>',
+        choices: ['Continue']
+    }
+
+    var block4_question_list = [g1_g1_order2,g2_g2_order2,g3_g3_order2,g4_g4_order2,g5_g5_order2]
+    block4_question_list = jsPsych.randomization.shuffle(block4_question_list)
+    var timeline = timeline.concat(block4_question_list)
+    timeline.push(block4)
+
+    
+    var knowledge_test_instruction = {
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>In the following, you will answer some knowledge tests about the teams being judged in this experiment.</p>'
+            + '<p>For each team there will be a total of 5 knowledge tests, so there will be a total of 50 questions.</p>'
+                + 'Your job is to answer these knowledge tests as well as you can. '
+                + 'You will earn a bonus of 1 dollar if you answer more than 30 of them correctly, and 2 dollars if you answer more than 40 of them correctly.</p>'
+                + '<p>Click on the start button to start the knowledge tests.</p>',
+        choices: ['Start']
+    }
+
+    timeline.push(knowledge_test_instruction)
+
+    var preferences_instruction = {
+        type: "html-button-response",
+        stimulus: '<div style="max-width:800px;">'
+            + '<p>In the final part , you will be asked to indicate your preferences of each team being judged in this experiment.</p>'
+            + '<p>You will indicate your response as a number from 0 to 6, with 0 being you very dislike the team, 6 being you very like the team, and 3 means neutral.</p>'
+            + '<p>Click on the start button to begin.</p>',
+        choices: ['Start']
+    }
+
+    timeline.push(preferences_instruction)
+
+    var preference_survey_1 = {
+        type: 'survey-multi-choice',
+        questions: [
+            {
+            prompt: "To what extend do you like " + "Arsenal " + '<img><img src="' + 'teams/arsenal.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "To what extend do you like " + "Chelsea " + '<img><img src="' + 'teams/chelsea.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "To what extend do you like " + "Newcastle " + '<img><img src="' + 'teams/newcastle.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "To what extend do you like " + "Brentford " + '<img><img src="' + 'teams/brentford.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "To what extend do you like " + "Wolverhampton " + '<img><img src="' + 'teams/wolverhampton.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}
+        ]
+    }
+
+    var preference_survey_2 = {
+        type: 'survey-multi-choice',
+        questions: [
+            {
+            prompt: "To what extend do you like " + "Manchester City " + '<img><img src="' + 'teams/manchester_city.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "To what extend do you like " + "Manchester United " + '<img><img src="' + 'teams/manchester_united.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "To what extend do you like " + "Tottenham " + '<img><img src="' + 'teams/tottenham.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "To what extend do you like " + "Westham " + '<img><img src="' + 'teams/westham.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}, 
+            {
+            prompt: "To what extend do you like " + "Everton " + '<img><img src="' + 'teams/everton.png' + '" width="25" height="25" style="vertical-align: middle;"></img>' + " ?", name: "rematch", 
+            options: ["0 (very dislike)", "1", "2", "3 (neutral)", "4", "5", "6 (very like)"], 
+            required:true,
+            horizontal: true}
+        ]
+    }
+
+    timeline.push(preference_survey_1)
+    timeline.push(preference_survey_2)
+
+
+    // var fullscreen_trial_exit = {
+    // type: 'fullscreen',
+    // fullscreen_mode: false
+    // }
+
+    // timeline.push(fullscreen_trial_exit);
+
+jsPsych.init({
+    timeline: timeline,
+    show_progress_bar: true,
+    auto_update_progress_bar: false,
+    on_finish: function() { 
+        var data = jsPsych.data.get().filter([
+            {trial_type: 'html-slider-response'},
+            {trial_type: 'survey-html-form'},
+        ]);
+        var values = data.values();
+        
+        // record all ratings
+        var trials = [];
+        for (var i = 0; i < values.length - 1; i++) {
+            var temp = {};
+            temp["responses"] = values[i]['responses'];
+            temp["statement"] = values[i]['statement'];
+            temp["case"] = values[i]['case'];
+            trials.push(temp);
+        }
+
+        // parse demographics and construct participant data
+        var participant = JSON.parse(values[values.length-1]['responses']);
+        // override if selected "other" or none
+        if (participant.gender == "other_gender" || typeof participant.gender == "undefined") {
+            participant.gender = participant.other_gender;
+        }
+        delete participant.other_gender;
+        if (participant.race == "other_race" || typeof participant.race == "undefined") {
+            participant.race = participant.other_race;
+        }
+        delete participant.other_race;
+        if (typeof participant.ethnicity == "undefined") {
+            participant.ethnicity = "";
+        }
+        participant.age = parseInt(participant.age);
+        participant.id = jsPsych.data.getURLVariable('id');
+        participant.time = parseInt(values[values.length-1]['time_elapsed']);
+        // convert to ISO format for mySQL
+        var now = new Date().toISOString();
+        participant.timestamp = now.slice(0, 19).replace('T', ' ');
+        // console.log([participant]);
+        // saveData('participants', JSON.stringify([participant]));
+
+        proliferate.submit({
+                    "trials": trials,
+                    "participants": participant
+        });
+
+        $('#jspsych-content').css('margin-top', 'auto');
+        $('#jspsych-content').html('<div style="margin: auto;"> <p>' +
+            ' Thank you for participating in this experiment! </p>' +
+            '<p> Redirecting you back to Prolific... </p>');
+        setTimeout(function(){}, 300);}
+        });
+</script>
+
+</html>
