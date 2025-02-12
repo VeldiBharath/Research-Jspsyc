@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2-Back Audio Task</title>
+    <!-- jsPsych library -->
+    <script src="jspsych-6.1.0/jspsych.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-audio-keyboard-response.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
+    <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" />
+  </head>
+  <body>
+    <script>
+      // Define audio stimuli
+      var audioStimuli = [
+        { stimulus: "mp3/1_Cat_R_Fall_L.mp3" },
+        { stimulus: "mp3/2_Dog_R_Win_L.mp3" },
+        { stimulus: "mp3/2_Dog_R_Win_L.mp3" },
+        { stimulus: "mp3/2_Dog_R_Win_L.mp3" },
+        { stimulus: "mp3/1_Cat_R_Fall_L.mp3" },
+      ];
+
+      // Shuffle audio stimuli for randomization
+      var shuffledAudioStimuli = jsPsych.randomization.shuffle(audioStimuli);
+
+      // Keep track of previous trials for 2-back checking
+      var previousStimuli = [];
+
+      // Trial definition for 2-back audio task
+      var nBackTrial = {
+        type: "audio-keyboard-response",
+        stimulus: jsPsych.timelineVariable("stimulus"),
+        choices: ["m"], // Space key for response
+        prompt: "<p>Press m if this audio matches the one 2 steps ago.</p>",
+        trial_duration: 3000, // 3-second duration to listen to audio and respond
+        data: {
+          is_match: function () {
+            // Check if current stimulus matches 2-back stimulus
+            if (previousStimuli.length >= 2) {
+              return (
+                previousStimuli[previousStimuli.length - 2] ===
+                jsPsych.timelineVariable("stimulus", true)
+              );
+            } else {
+              return false;
+            }
+          },
+        },
+        on_finish: function (data) {
+          data.correct =
+            (data.response === "m" && data.is_match) ||
+            (data.response === null && !data.is_match);
+          previousStimuli.push(data.stimulus);
+        },
+      };
+
+      function startExperiment() {
+        var timeline = [
+          {
+            timeline: [nBackTrial],
+            timeline_variables: shuffledAudioStimuli,
+            randomize_order: true,
+          },
+        ];
+
+        jsPsych.init({
+          timeline: timeline,
+          use_webaudio: true,
+          preload_audio: ["mp3/1_Cat_R_Fall_L.mp3", "mp3/2_Dog_R_Win_L.mp3"],
+          show_progress_bar: false,
+          on_finish: endExp,
+        });
+      }
+
+      // Listen for a message from the parent frame to start the experiment
+      window.addEventListener("message", function (event) {
+        if (event.data === "startIframe1") {
+          startExperiment();
+        }
+      });
+
+      window.addEventListener("message", function (event) {
+        if (event.data === "stopIframe1") {
+          // Stop the jsPsych experiment
+          jsPsych.endExperiment("Experiment stopped by main frame.");
+
+          // Stop audio playback by suspending the AudioContext
+          var audioContext = jsPsych.pluginAPI.audioContext();
+          if (audioContext && audioContext.state !== "closed") {
+            audioContext.close().then(() => {
+              console.log("AudioContext stopped.");
+            });
+          }
+        }
+      });
+
+      function endExp() {
+        // Send data to the main frame and stop Experiment 1
+        var data = jsPsych.data.get().json();
+        parent.postMessage({ msg: "stopExperiment1", data: data }, "*");
+
+        var audioContext = jsPsych.pluginAPI.audioContext();
+        if (audioContext && audioContext.state !== "closed") {
+          audioContext.close().then(() => {
+            console.log("AudioContext stopped.");
+          });
+        }
+      }
+    </script>
+  </body>
+</html>

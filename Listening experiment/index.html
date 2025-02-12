@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Two jsPsych Experiments</title>
+    <script src="jspsych-6.1.0/jspsych.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
+    <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" />
+    <style>
+      iframe {
+        width: 48vw;
+        height: 40vh;
+        border: 1px solid #ccc;
+        margin: 10px;
+        display: none; /* Hide the iframes initially */
+      }
+      .iframe-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .welcome-screen {
+        text-align: center;
+        margin-top: 20%;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+
+      #iframe1 {
+        height: 0; /* Set height to 0 to hide iframe1 */
+        opacity: 0; /* Makes iframe1 invisible */
+        pointer-events: none; /* Prevents interaction with iframe1 */
+        overflow: hidden; /* Prevents any overflow */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Parallel jsPsych Experiments</h1>
+
+    <div class="welcome-screen" id="welcome-screen">
+      <h2>Welcome to the Experiment!</h2>
+      <p>Press the button below to begin the experiments.</p>
+      <button onclick="startExperiments()">Start Experiment</button>
+    </div>
+
+    <div class="iframe-container" id="iframe-container" style="display: none">
+      <iframe src="iframe1.html" id="iframe1"></iframe>
+      <iframe src="iframe2.html" id="iframe2"></iframe>
+    </div>
+
+    <button id="stop-button" onclick="stopExperiments()" style="display: none">
+      Stop Experiment
+    </button>
+
+    <script>
+      function startExperiments() {
+        // Hide the welcome screen
+        document.getElementById("welcome-screen").style.display = "none";
+        document.getElementById("iframe-container").style.display = "flex";
+        document.getElementById("iframe1").style.display = "block";
+        document.getElementById("iframe2").style.display = "block";
+        document.getElementById("stop-button").style.display = "block"; // Show the stop button
+
+        // Start iframe1 experiment with a 2-second delay
+        setTimeout(function () {
+          document
+            .getElementById("iframe1")
+            .contentWindow.postMessage("startIframe1", "*");
+        }, 2000); // 2000 ms = 2 seconds
+      }
+
+      function stopExperiments() {
+        // Send messages to both iframes to stop the experiments
+        document
+          .getElementById("iframe1")
+          .contentWindow.postMessage("stopIframe1", "*");
+        document
+          .getElementById("iframe2")
+          .contentWindow.postMessage("stopIframe2", "*");
+
+        // Hide the iframes and show the welcome screen again
+        document.getElementById("iframe-container").style.display = "none";
+        document.getElementById("welcome-screen").style.display = "block";
+        document.getElementById("stop-button").style.display = "none"; // hide the stop button
+        thankParticipants();
+      }
+
+      // Listen for messages from iframes
+      window.addEventListener("message", function (event) {
+        if (event.source === document.getElementById("iframe1").contentWindow) {
+          if (event.data.msg === "stopExperiment1") {
+            console.log("Iframe 1 data:", event.data.data);
+          }
+        } else if (
+          event.source === document.getElementById("iframe2").contentWindow
+        ) {
+          if (event.data.msg === "stopExperiment2") {
+            console.log("Iframe 2 data:", event.data.data);
+            // Send a post message to iframe1 to stop the experiment
+            document
+              .getElementById("iframe1")
+              .contentWindow.postMessage("stopIframe1", "*");
+          }
+        }
+      });
+
+      function thankParticipants() {
+        var timeline = [
+          {
+            type: "html-button-response",
+            stimulus: "Thank you for participating in the experiment!",
+            choices: ["END"],
+          },
+        ];
+
+        jsPsych.init({
+          timeline: timeline,
+          on_finish: function () {
+            console.log("Experiment ended. Thank you screen displayed.");
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

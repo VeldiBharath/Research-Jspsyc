@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych-6.1.0/jspsych.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-audio-keyboard-response.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
+    <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" />
+  </head>
+  <body></body>
+  <script>
+    var timeline = [];
+    var survey = [];
+
+    var timeline_variables_block_1 = [
+      { sound: "mp3/1_Cat_R_Fall_L.mp3", left: ["fall"], right: ["cat"] },
+      { sound: "mp3/2_Dog_R_Win_L.mp3", left: ["win"], right: ["dog"] },
+    ];
+
+    var welcome_screen = {
+      type: "html-button-response",
+      stimulus:
+        "<p>Please put headphones on </p>" +
+        "<p>Your task is to listen to the audio and perform 2 back auditory task.</p>",
+      choices: ["Continue"],
+    };
+    timeline.push(welcome_screen);
+
+    var g1_g2_order1 = {
+      type: "html-slider-response",
+      stimulus:
+        "<p>How likely do you think that " +
+        "Trumph " +
+        " will <b>eliminate</b> " +
+        "others " +
+        " in upcoming elections?</p>" +
+        "<p>Please click on the slider below to indicate your response. </p>" +
+        "<br />",
+      labels: [
+        "0%<br />(definitely no)",
+        "10",
+        "20",
+        "30",
+        "40",
+        "50",
+        "60",
+        "70",
+        "80",
+        "90",
+        "100%<br />(definitely yes)",
+      ],
+      min: 0,
+      max: 100,
+      step: 1,
+      choices: ["Continue"],
+      statement: "g1g2o1",
+      case: "g1g2o1",
+      slider_width: 650,
+    };
+
+    timeline.push(g1_g2_order1);
+
+    var audio_trial = {
+      type: "audio-keyboard-response",
+      stimulus: jsPsych.timelineVariable("sound"),
+      choices: jsPsych.NO_KEYS,
+      trial_ends_after_audio: true,
+    };
+
+    var response_trial = {
+      type: "survey-text",
+      questions: [
+        {
+          prompt:
+            "Please write down any words that you heard. If you heard more than one word please separate each word with a comma.",
+        },
+      ],
+      data: {
+        sound: jsPsych.timelineVariable("sound"),
+        phase: "response",
+      },
+      on_finish: function (data) {
+        var subject_response = JSON.parse(data.responses).Q0;
+        var lower_case_response = subject_response.toLowerCase();
+        var subject_response_words = lower_case_response.split(",");
+        var right_word = false;
+        var left_word = false;
+        for (var i = 0; i < subject_response_words.length; i++) {
+          var word = subject_response_words[i].trim();
+          if (jsPsych.timelineVariable("right", true).includes(word)) {
+            right_word = true;
+          }
+          if (jsPsych.timelineVariable("left", true).includes(word)) {
+            left_word = true;
+          }
+        }
+        data.left_word_correct = left_word;
+        data.right_word_correct = right_word;
+      },
+    };
+
+    var blocks = [timeline_variables_block_1];
+
+    var test_procedure_first_half = {
+      timeline: [audio_trial, response_trial],
+      timeline_variables: blocks[0],
+      randomize_order: true,
+    };
+    timeline.push(test_procedure_first_half);
+
+    jsPsych.init({
+      timeline: timeline,
+      use_webaudio: false,
+      preload_audio: ["mp3/1_Cat_R_Fall_L.mp3", "mp3/2_Dog_R_Win_L.mp3"],
+
+      show_progress_bar: true,
+      auto_update_progress_bar: false,
+      on_finish: function () {
+        var data = jsPsych.data
+          .get()
+          .filter([
+            { trial_type: "html-slider-response" },
+            { trial_type: "survey-html-form" },
+          ]);
+        var values = data.values();
+
+        // record all ratings
+        var trials = [];
+        for (var i = 0; i < values.length - 1; i++) {
+          var temp = {};
+          temp["responses"] = values[i]["responses"];
+          temp["statement"] = values[i]["statement"];
+          temp["case"] = values[i]["case"];
+          trials.push(temp);
+        }
+      },
+    });
+  </script>
+</html>

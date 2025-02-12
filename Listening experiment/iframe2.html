@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Slider Response Experiment</title>
+    <script src="jspsych-6.1.0/jspsych.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-slider-response.js"></script>
+    <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+    <link rel="stylesheet" href="jspsych-6.1.0/css/jspsych.css" />
+    <style>
+      #stop-button {
+        display: none; /* Hide initially */
+        padding: 10px 20px;
+        font-size: 16px;
+        margin-top: 20px;
+      }
+      #experiment-done-message {
+        display: none; /* Hide the message initially */
+        font-size: 24px;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      #stop-button {
+        display: none; /* Hide the stop button initially */
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: red;
+        color: white;
+        border: none;
+        cursor: pointer;
+        position: fixed; /* Fixed position to stay in the same spot */
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center horizontally */
+      }
+    </style>
+  </head>
+  <body>
+    <button id="stop-button" onclick="stopExperiments()">
+      Stop Experiment
+    </button>
+  </body>
+  <script>
+    // Create a timeline array
+    var timeline2 = [];
+
+    // Slider response trial
+    var sliderTrial = {
+      type: "html-slider-response",
+      stimulus:
+        'On a scale from 0 to 100, how much do you agree with the following statement:<br><strong>"This is a simple slider response experiment."</strong>',
+      labels: ["0 (Not at all)", "50 (Somewhat)", "100 (Very much)"],
+      required: true, // Makes the slider mandatory
+    };
+    timeline2.push(sliderTrial);
+    var sliderTrial1 = {
+      type: "html-slider-response",
+      stimulus:
+        'On a scale from 0 to 100, how much do you agree with the following statement:<br><strong>"This is not done yet."</strong>',
+      labels: ["0 (Not at all)", "50 (Somewhat)", "100 (Very much)"],
+      required: true, // Makes the slider mandatory
+    };
+    timeline2.push(sliderTrial1);
+
+    // Initialize the experiment
+    jsPsych.init({
+      timeline: timeline2,
+      on_finish: endExperiment,
+    });
+
+    function endExperiment() {
+      // Send data and message to stop
+      var data = jsPsych.data.get().json();
+      parent.postMessage({ msg: "stopExperiment2", data: data }, "*");
+    }
+
+    window.addEventListener("message", function (event) {
+      if (event.data === "stopIframe2") {
+        jsPsych.endExperiment("Experiment stopped.");
+      }
+    });
+  </script>
+</html>
